@@ -122,7 +122,13 @@ typename bnf_plusplus_parser<STRING,UV>::size_type bnf_plusplus_parser<STRING,UV
         if(test!=npos)
             offset+=test;
         else
-            match=false;
+		{
+			test=compare_symbol(offset,'\r',uv);
+			if(test!=npos)
+				offset+=test;
+			else
+				match=false;
+		}
     }
     if(!match) {
         offset=base;
