@@ -119,13 +119,21 @@ string::size_type bnf_plusplus_gen::grammar(string::size_type base, string *ptr)
         subst(result_source,"%(\n","%)\n","");
 
         bnf_entries.erase("eoi");
-        for(entries_t::iterator i=bnf_entries.begin();i!=bnf_entries.end();i++)
+		for(entries_t::iterator i=bnf_entries.begin();i!=bnf_entries.end();)
+		{
             if(i->second.first && i->second.second)
-                bnf_entries.erase(i);
+			{
+				bnf_entries.erase(i);
+				i= bnf_entries.begin();
+			}
             else if(i->second.first) {
                 cerr << "Warning: method " << i->first << " defined, but not used" << endl;
                 bnf_entries.erase(i);
+				i= bnf_entries.begin();
             }
+			else
+				++i;
+		}
 
         if(!bnf_entries.empty())
             for(entries_t::iterator i=bnf_entries.begin();i!=bnf_entries.end();i++) {
